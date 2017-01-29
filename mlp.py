@@ -156,12 +156,22 @@ def accuracy_on_dataset(inputs, targets, weights1, weights2):
 
     # **************************YOUR CODE HERE*********************
     # *************************************************************
+    total = 0
+    correct = 0
+    for i, input_x in enumerate(inputs):
+        _, activations = mlpfwd(input_x, weights1, weights2)
+        expected_output = targets[i]
+        actual_output = activations[-1]
+        # expected_output - actual_output
+        for j, expected_j_output in enumerate(expected_output):
+            total += 1
+            if expected_j_output == round(actual_output[j]):
+                correct += 1
 
-
+        # *************************************************************
     # *************************************************************
-    # *************************************************************
 
-    return 0
+    return float(correct) / total
 
 
 def mlptrain(inputs, targets, eta, nepochs, weights1, weights2):
