@@ -13,9 +13,7 @@ def init_mlp(inputs, targets, nhidden):
 
     # Initialize network
     weights1 = (np.random.rand(nin + 1, nhidden) - 0.5) * 2 / np.sqrt(nin)
-    weights1 = np.array([[0.24089566, 0.27497273], [0.11917517, -0.0307281], [-0.39397026, 0.60853348]])
     weights2 = (np.random.rand(nhidden + 1, nout) - 0.5) * 2 / np.sqrt(nhidden)
-    weights2 = np.array([[-0.43097], [-0.14942569], [0.04136656]])
     return weights1, weights2
 
 
@@ -104,7 +102,6 @@ def mlpfwd(input_x, weights1, weights2):
     for neuron_index, neuron_input_weights in enumerate(weights1.T):
         for i, weight in enumerate(neuron_input_weights):
             layer_output[neuron_index] += layer_input[i] * weight
-            # hidden_layer_input = with_bias(activations[-1])
     activations.append(np.array([sigmoid(output) for output in layer_output]))
     weighted_outputs.append(layer_output)
 
@@ -156,7 +153,6 @@ def accuracy_on_dataset(inputs, targets, weights1, weights2):
         _, activations = mlpfwd(input_x, weights1, weights2)
         expected_output = targets[i]
         actual_output = activations[-1]
-        # expected_output - actual_output
         for j, expected_j_output in enumerate(expected_output):
             total += 1
             if expected_j_output == round(actual_output[j]):
