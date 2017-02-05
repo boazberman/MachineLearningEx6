@@ -20,7 +20,7 @@ def init_mlp(inputs, targets, nhidden):
 
 
 def sum_of_squares_error_function(expected_output_y, actual_y):
-    return 0.5 * sum(np.power(actual_y[i] - expected_output_y[i], 2) for i in xrange(len(expected_output_y)));
+    return 0.5 * sum(np.power(actual_y[i] - expected_output_y[i], 2) for i in xrange(len(expected_output_y)))
 
 
 def loss_and_gradients(input_x, expected_output_y, weights1, weights2):
@@ -53,25 +53,19 @@ def loss_and_gradients(input_x, expected_output_y, weights1, weights2):
     loss = sum_of_squares_error_function(expected_output_y, actual_y)
     weights2_gradient = np.zeros(weights2.shape)
     weights2_error = np.zeros(weights2.shape)
+    first_layer_output = activations[0]
     for i, output_neuron in enumerate(expected_output_y):
         error = (actual_y[i] - output_neuron) * actual_y[i] * (1 - actual_y[i])
-        for j, weights_to_output_neuron in enumerate(with_bias(activations[0])):
-            weights2_error[j][i] += weights_to_output_neuron
-            weights2_gradient[j][i] += weights_to_output_neuron * error
+        for j, output_value in enumerate(with_bias(first_layer_output)):
+            weights2_error[j][i] += error
+            weights2_gradient[j][i] += output_value * error
 
     weights1_gradient = np.zeros(weights1.shape)
-    # for i, hidden_weight in enumerate(activations[1]):
-    for i, sss in enumerate(activations[0]):
-        error = sss * (1 - sss) * sum(weights2_error[i] * weights2[i])
+    for i, output_value in enumerate(first_layer_output):
+        error = output_value * (1 - output_value) * sum(weights2_error[i] * weights2[i])
         for j, xj in enumerate(input_x):
             weights1_gradient[j][i] += xj * error
-    # print "OMG"
-        # for j, weights_to_output_neuron in enumerate(input_x):
-        #     weights1_gradient[j][i] += weights_to_output_neuron * error
-    # weights2_gradient = [(actual_y[i] - expected_output_y[i]) * actual_y[i] * (1 - actual_y[i]) for i in
-    #                      xrange(len(expected_output_y))]
-    # weights1_gradient = [weights1[i]]
-    
+
     # *************************************************************
     # *************************************************************
 
